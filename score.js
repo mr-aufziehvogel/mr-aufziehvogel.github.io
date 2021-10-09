@@ -16,7 +16,6 @@ class Score extends Phaser.Scene {
   }
 
   create() {
-
     var add = this.add;
     WebFont.load({
       google: {
@@ -48,17 +47,24 @@ class Score extends Phaser.Scene {
       this
     );
 
-    var screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-    var screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    var screenCenterY =
+      this.cameras.main.worldView.y + this.cameras.main.height / 2;
+    var screenCenterX =
+      this.cameras.main.worldView.x + this.cameras.main.width / 2;
     // var loadingText = this.add.text(screenCenterX, screenCenterY, 'Loading: 0%').setOrigin(0.5);
 
-    
-
-    var bla = add.text(screenCenterX, screenCenterY - 140, "Score: " + score + " (" + hiscore + ")" , {
-      fontFamily: "Urbanist",
-      fontSize: "76px",
-    }).setOrigin(0.5);
-   bla.setAlign("center");
+    var bla = add
+      .text(
+        screenCenterX,
+        screenCenterY - 140,
+        "Score: " + score + " (" + hiscore + ")",
+        {
+          fontFamily: "Urbanist",
+          fontSize: "76px",
+        }
+      )
+      .setOrigin(0.5);
+    bla.setAlign("center");
 
     sound_click2 = this.sound.add("snd_click");
     sound_click3 = this.sound.add("snd_click");
@@ -83,6 +89,10 @@ class Score extends Phaser.Scene {
           choice_score = 0;
           menu_score.setTexture("score1");
           break;
+        case 0:
+          choice_score = 1;
+          menu_score.setTexture("score2");
+          break;
       }
     }
 
@@ -92,6 +102,10 @@ class Score extends Phaser.Scene {
         case 0:
           choice_score = 1;
           menu_score.setTexture("score2");
+          break;
+        case 1:
+          choice_score = 0;
+          menu_score.setTexture("score1");
           break;
       }
     }
@@ -104,7 +118,7 @@ class Score extends Phaser.Scene {
       if (choice_score === 1) {
         choice_score = 0;
         tile_count = 0;
-        seconds = 0;
+        countdown = 0;
         score = 0;
         this.scene.stop("Base");
         this.scene.stop(last_scene);

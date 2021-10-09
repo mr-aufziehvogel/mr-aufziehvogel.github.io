@@ -59,6 +59,10 @@ class Pause extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
       sound_click3.play();
       switch (choice_pause) {
+        case 0:
+          choice_pause = 2;
+          menu_pause.setTexture("menu3");
+          break;
         case 1:
           choice_pause = 0;
           menu_pause.setTexture("menu1");
@@ -81,6 +85,10 @@ class Pause extends Phaser.Scene {
           choice_pause = 2;
           menu_pause.setTexture("menu3");
           break;
+        case 2:
+          choice_pause = 0;
+          menu_pause.setTexture("menu1");
+          break;
       }
     }
 
@@ -102,7 +110,7 @@ class Pause extends Phaser.Scene {
       if (choice_pause === 2) {
         choice_pause = 0;
         tile_count = 0;
-        seconds = 0;
+        countdown = 0;
         score = 0;
         this.scene.stop("Base");
         this.scene.start("Title");

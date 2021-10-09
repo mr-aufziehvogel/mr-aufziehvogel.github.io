@@ -4,7 +4,6 @@ class Title extends Phaser.Scene {
   }
 
   preload() {
-
     // ##### PLUGINS ######
     this.load.plugin(
       "rexperlinplugin",
@@ -100,11 +99,15 @@ class Title extends Phaser.Scene {
   }
 
   update() {
-
     // ##### KEYBOARD INPUT ######
 
     if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
       switch (choice_title) {
+        case 0:
+          choice_title = 5;
+          title_menu.setTexture("title6");
+          sound_click.play();
+          break;
         case 1:
           choice_title = 0;
           title_menu.setTexture("title1");
@@ -158,6 +161,11 @@ class Title extends Phaser.Scene {
         case 4:
           choice_title = 5;
           title_menu.setTexture("title6");
+          sound_click.play();
+          break;
+        case 5:
+          choice_title = 0;
+          title_menu.setTexture("title1");
           sound_click.play();
           break;
       }

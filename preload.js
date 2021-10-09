@@ -32,8 +32,9 @@ var layer3;
 var layer4;
 var layer5;
 
+var globals;
 var lives;
-var seconds;
+var countdown;
 var speed = 0;
 var tile_height;
 var tile_count;
@@ -101,12 +102,13 @@ class Preload extends Phaser.Scene {
     this.load.json("Level4", "level4.json");
     this.load.json("Level5", "level5.json");
     this.load.json("Level6", "level6.json");
+    this.load.json("Globals", "globals.json");
 
     this.load.image("coin1", "level1/coin.png");
     this.load.image("coin2", "level2/coin.png");
     this.load.image("coin3", "level3/coin.png");
-    this.load.image("coin4", "level4/coin.png");
-    this.load.image("coin5", "level5/coin.png");
+    this.load.image("coin5", "level4/coin.png");
+    this.load.image("coin4", "level5/coin.png");
     this.load.image("coin6", "level6/coin.png");
 
     // ##### \ASSETS ######

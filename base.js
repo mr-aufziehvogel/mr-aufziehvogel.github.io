@@ -65,7 +65,7 @@ class Base extends Phaser.Scene {
     layer2.alpha = 0.3;
     layer3 = this.add.tileSprite(0, 50, 960, 640, "layer4-3");
     layer3.setOrigin(0, 0);
-    layer4 = this.add.tileSprite(0, 50, 960, 640, "layer4-4");
+    layer4 = this.add.tileSprite(0, 170, 960, 640, "layer4-4");
     layer4.setOrigin(0, 0);
   }
 
@@ -84,7 +84,7 @@ class Base extends Phaser.Scene {
   init() {
     choice_pause = 0;
     score = 0;
-    seconds = 0;
+    countdown = 0;
     tile_count = 0;
   }
 
@@ -117,6 +117,9 @@ class Base extends Phaser.Scene {
         json = this.cache.json.get("Level6");
         break;
     }
+
+    globals = this.cache.json.get("Globals");
+    countdown = globals.countdown;
 
     // ##### LOAD JSON ######
     lives = json.lives;
@@ -171,7 +174,7 @@ class Base extends Phaser.Scene {
       },
     });
 
-    hud_score = add.text(20, 12, "Score: 0 (" + hiscore + ")", {
+    hud_score = add.text(20, 12, "Score: 0 (0)", {
       fontFamily: "Urbanist",
       fontSize: "20px",
     });
@@ -230,7 +233,7 @@ class Base extends Phaser.Scene {
       enemies2.setVelocityX(json.enemy_velocity);
       wobbles.setVelocityX(json.enemy_velocity);
       tile_count += 1;
-      seconds += 0.2;
+      countdown -= 0.2;
       if (tile_count > tilemap.length) {
         tile_count = 0;
       }
@@ -268,7 +271,7 @@ class Base extends Phaser.Scene {
       if (tintTween.isPlaying() === false) {
         tintTween.resume();
         enemy.destroy();
-        lives -= 1;
+        countdown -= globals.death_penalty;
         if (sound_damage.isPlaying === false) {
           sound_damage.play();
         }
@@ -279,7 +282,7 @@ class Base extends Phaser.Scene {
       if (tintTween.isPlaying() === false) {
         tintTween2.resume();
         enemy.destroy();
-        lives -= 1;
+        countdown -= globals.death_penalty;
         if (sound_damage.isPlaying === false) {
           sound_damage.play();
         }
@@ -289,7 +292,7 @@ class Base extends Phaser.Scene {
     this.physics.add.overlap(wobbles, this.player, function (player, wobble) {
       if (tintTween.isPlaying() === false) {
         tintTween.resume();
-        lives -= 1;
+        countdown -= globals.death_penalty;
         wobble.destroy();
         if (sound_damage.isPlaying === false) {
           sound_damage.play();
@@ -304,8 +307,10 @@ class Base extends Phaser.Scene {
         if (sound_coin.isPlaying === false) {
           sound_coin.play();
         }
-        localStorage.setItem("hiscore" + last_scene, score);
-        hiscore = score;
+        if (score > hiscore) {
+          localStorage.setItem("hiscore" + last_scene, score);
+          hiscore = score;
+        }
       }
     });
 
@@ -342,15 +347,13 @@ class Base extends Phaser.Scene {
     }
 
     // ##### DISPLAY ######
-    // hud_hiscore.setText("Hiscore: " + hiscore2);
-    if (lives >= 0) {
-      hud_lives.setText("Lives: " + lives);
+    if (countdown >= 0) {
+      hud_lives.setText("Time: " + Math.floor(countdown));
     }
     hud_score.setText("Score: " + score + " (" + hiscore + ")");
-    // hud_time.setText("Time: " + Math.floor(seconds) + "s");
 
     // ##### DEATH ######
-    if (lives < 0) {
+    if (countdown < 0) {
       this.scene.pause();
       timedEvent.paused = true;
       this.scene.launch("Score");
